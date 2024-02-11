@@ -1,3 +1,13 @@
+import subprocess
+
+def install_libraries():
+    libraries = ['netCDF4', 'numpy', 'pandas']  # замените на фактические имена библиотек
+    for lib in libraries:
+        subprocess.check_call(['pip', 'install', lib])
+
+# Вызов функции для установки библиотек
+install_libraries()
+
 import export_tvh_onetime
 import export_tvh_alltime
 import export_mean_month
