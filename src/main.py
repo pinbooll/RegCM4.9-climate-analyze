@@ -4,6 +4,7 @@ import export_mean_month
 import export_mean_year
 import os
 import time
+import sys
 #pyinstaller --onefile main.py
 
 date_list = input("Даты через запятую в формате ГГГГММДД: ").strip()
@@ -92,7 +93,7 @@ while True:
       radius = int(input("Радиус (при указании точки в г. Волгоград от 1 до 145): ")) # 1 = 10км
 
     if(int(choice) == 0):
-      exit()
+      sys.exit()
   except Exception as e:
       print(f"Произошла ошибка: {e}. Перезапуск приложения.")
       time.sleep(5)  # опциональная задержка перед перезапуском
