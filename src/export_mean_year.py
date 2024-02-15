@@ -101,5 +101,9 @@ def output_main(date_list, dir_input, dir_output, radius, lat, lon, opendata):
 
   output_dir = f'{dir_output}\\Means'
   os.makedirs(output_dir, exist_ok=True)
+  correlation = result_df_t['Model'].corr(result_df_t['OpenData'])
+  print(f"Коэффициент корреляции (температура) = {correlation}")
+  correlation = result_df_rh['Model'].corr(result_df_rh['OpenData'])
+  print(f"Коэффициент корреляции (влажность) = {correlation}")
   result_df_t.to_csv(f'{output_dir}\\mean_t_0_{date_list[0]}-{date_list[len(date_list)-1]}.csv', header=False, index=False, mode='w')
   result_df_rh.to_csv(f'{output_dir}\\mean_rh_0_{date_list[0]}-{date_list[len(date_list)-1]}.csv', header=False, index=False, mode='w')

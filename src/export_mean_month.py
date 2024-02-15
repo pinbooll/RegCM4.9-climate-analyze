@@ -34,6 +34,8 @@ def meaning_main_t(dir, date, kz, radius, lat, lon, df, dir_output):
 
   mean_df = pd.DataFrame(data= mean, columns=[f'{date}'])
   mean_df['opendata'] = list_opendata
+  correlation = mean_df['opendata'].corr(mean_df[f'{date}'])
+  print(f"Коэффициент корреляции (температура) = {correlation}")
   mean_df.to_csv(f'{output_dir}\\mean_t_{kz}_{date}.csv', header=False, index=False, mode='w')
 
 def meaning_main_hum(dir, date, kz, radius, lat, lon, df, dir_output):
@@ -65,6 +67,8 @@ def meaning_main_hum(dir, date, kz, radius, lat, lon, df, dir_output):
 
   mean_df = pd.DataFrame(data= mean, columns=[f'{date}'])
   mean_df['opendata'] = list_opendata
+  correlation = mean_df['opendata'].corr(mean_df[f'{date}'])
+  print(f"Коэффициент корреляции (влажность) = {correlation}")
   mean_df.to_csv(f'{output_dir}\\mean_rh_{kz}_{date}.csv', header=False, index=False, mode='w')
 
 def output_main(date_list, dir_input, dir_output, radius, lat, lon, dir_opendata):
