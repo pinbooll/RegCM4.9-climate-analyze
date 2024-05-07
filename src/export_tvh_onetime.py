@@ -21,12 +21,13 @@ def output(df, date, var, dir_output, time_index):
   Returns:
   None
   """
-  output_dir = f'{dir_output}\\{date}\\tvh_{time_transform(time_index)}'
+  output_dir = os.path.join(dir_output, date, f"tvh_{time_transform(time_index)}")
   os.makedirs(output_dir, exist_ok=True)
   i = 0
   for z in df.index.unique():
     temp = df.loc[df.index == z].copy()
-    temp.to_csv(f'{output_dir}\\{var}_{i}_{date}.csv', header=False, index=False)
+    csv_file_path = os.path.join(output_dir, f"{var}_{i}_{date}.csv")
+    temp.to_csv(csv_file_path, header=False, index=False)
     i += 1
 
 def output_main(date, time_index, dir, radius, lat, lon, dir_output):
@@ -45,7 +46,8 @@ def output_main(date, time_index, dir, radius, lat, lon, dir_output):
   Returns:
   None
   """
-  dataset = nc.Dataset(f'{dir}\\50ea__ATM.{date}00.nc', 'r')
+  nc_file_path = os.path.join(dir, f'50ea__ATM.{date}00.nc')
+  dataset = nc.Dataset(nc_file_path, 'r')
   df_t = data_to_df.t_to_df(dataset, time_index, radius, lat, lon)
   df_uv = data_to_df.v_to_df(dataset, time_index, radius, lat, lon)
   df_rh = data_to_df.hum_to_df(dataset, time_index, radius, lat, lon, 'rh')

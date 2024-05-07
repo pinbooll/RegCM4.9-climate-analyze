@@ -21,12 +21,13 @@ def output(df, date, var, dir_output, time_index):
   Returns:
   None
   """
-  output_dir = f'{dir_output}\\{date}\\alltime'
+  output_dir = os.path.join(dir_output, date, 'alltime')
   os.makedirs(output_dir, exist_ok=True)
   i = 0
   for z in df.index.unique():
     temp = df.loc[df.index == z].copy()
-    temp.to_csv(f'{output_dir}\\{var}_{i}_{time_transform(time_index)}.csv', header=False, index=False)
+    csv_file_path = os.path.join(output_dir, f"{var}_{i}_{time_transform(time_index)}.csv")
+    temp.to_csv(csv_file_path, header=False, index=False)
     i += 1
 
 def output_main(date, dir, radius, lat, lon, dir_output, var_list):
@@ -45,7 +46,8 @@ def output_main(date, dir, radius, lat, lon, dir_output, var_list):
   Returns:
   None
   """
-  dataset = nc.Dataset(f'{dir}\\50ea__ATM.{date}00.nc', 'r')
+  nc_file_path = os.path.join(dir, f'50ea__ATM.{date}00.nc')
+  dataset = nc.Dataset(nc_file_path, 'r')
   for var in var_list:
     if var == 't':
       for time in range(0, len(dataset.variables['time'])):

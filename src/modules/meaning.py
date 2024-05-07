@@ -1,5 +1,6 @@
 import netCDF4 as nc
 import pandas as pd # библиотека для проведения операций над матрицами
+import os
 from modules import data_to_df
 
 def meaning_t(date, dir, var, kz, radius, lat, lon):
@@ -18,7 +19,8 @@ def meaning_t(date, dir, var, kz, radius, lat, lon):
   Returns:
   list: Усредненные значения.
   """
-  dataset = nc.Dataset(f'{dir}\\50ea__ATM.{date}00.nc', 'r')
+  nc_file_path = os.path.join(dir, f'50ea__ATM.{date}00.nc')
+  dataset = nc.Dataset(nc_file_path, 'r')
   list_mean = []
   for time in range(0, len(dataset.variables['time'])):
     df = data_to_df.t_to_df(dataset, time, radius, lat, lon)
@@ -42,7 +44,8 @@ def meaning_hum(date, dir, var, kz, radius, lat, lon):
   Returns:
   list: Усредненные значения.
   """
-  dataset = nc.Dataset(f'{dir}\\50ea__ATM.{date}00.nc', 'r')
+  nc_file_path = os.path.join(dir, f'50ea__ATM.{date}00.nc')
+  dataset = nc.Dataset(nc_file_path, 'r')
   list_mean = []
   for time in range(0, len(dataset.variables['time'])):
     df = data_to_df.hum_to_df(dataset, time, radius, lat, lon, var)

@@ -82,7 +82,8 @@ def meaning_main_hum(dir, date, kz, radius, lat, lon, df):
   return mean_df
 
 def output_main(date_list, dir_input, dir_output, radius, lat, lon, opendata):
-  dataset = nc.Dataset(f'{dir_input}/50ea__ATM.{date_list[0]}00.nc', 'r')
+  nc_file_path_input = os.path.join(dir_input, f'50ea__ATM.{date_list[0]}00.nc')
+  dataset = nc.Dataset(nc_file_path_input, 'r')
   df_t = data_to_df.t_to_df(dataset, 4, radius, lat, lon)
   df_rh = data_to_df.hum_to_df(dataset, 4, radius, lat, lon, 'rh')
 
@@ -99,11 +100,13 @@ def output_main(date_list, dir_input, dir_output, radius, lat, lon, opendata):
     result_df_t = pd.concat([result_df_t, temp_t], ignore_index=True)
     result_df_rh = pd.concat([result_df_rh, temp_rh], ignore_index=True)
 
-  output_dir = f'{dir_output}\\Means'
+  output_dir = os.path.join(dir_output, 'Means')
   os.makedirs(output_dir, exist_ok=True)
   correlation = result_df_t['Model'].corr(result_df_t['OpenData'])
   print(f"Коэффициент корреляции (температура) = {correlation}")
   correlation = result_df_rh['Model'].corr(result_df_rh['OpenData'])
   print(f"Коэффициент корреляции (влажность) = {correlation}")
-  result_df_t.to_csv(f'{output_dir}\\mean_t_0_{date_list[0]}-{date_list[len(date_list)-1]}.csv', header=False, index=False, mode='w')
-  result_df_rh.to_csv(f'{output_dir}\\mean_rh_0_{date_list[0]}-{date_list[len(date_list)-1]}.csv', header=False, index=False, mode='w')
+  csv_file_path_df_t = os.path.join(output_dir, f"mean_t_0_{date_list[0]}-{date_list[len(date_list)-1]}.csv")
+  result_df_t.to_csv(csv_file_path_df_t, header=False, index=False, mode='w')
+  csv_file_path_df_rh = os.path.join(output_dir, f"mean_rh_0_{date_list[0]}-{date_list[len(date_list)-1]}.csv")
+  result_df_rh.to_csv(csv_file_path_df_rh, header=False, index=False, mode='w')

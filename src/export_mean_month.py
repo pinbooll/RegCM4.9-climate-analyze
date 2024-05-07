@@ -21,7 +21,7 @@ def meaning_main_t(dir, date, kz, radius, lat, lon, df, dir_output):
   Returns:
   None
   """
-  output_dir = f'{dir_output}\\{date}\\Means'
+  output_dir = os.path.join(dir_output, date, 'Means')
   os.makedirs(output_dir, exist_ok=True)
 
   mean = meaning.meaning_t(date, dir, 't', kz, radius, lat, lon)
@@ -36,7 +36,8 @@ def meaning_main_t(dir, date, kz, radius, lat, lon, df, dir_output):
   mean_df['opendata'] = list_opendata
   correlation = mean_df['opendata'].corr(mean_df[f'{date}'])
   print(f"Коэффициент корреляции (температура) = {correlation}")
-  mean_df.to_csv(f'{output_dir}\\mean_t_{kz}_{date}.csv', header=False, index=False, mode='w')
+  csv_file_path = os.path.join(output_dir, f"mean_t_{kz}_{date}.csv")
+  mean_df.to_csv(csv_file_path, header=False, index=False, mode='w')
 
 def meaning_main_hum(dir, date, kz, radius, lat, lon, df, dir_output):
   """
@@ -54,7 +55,7 @@ def meaning_main_hum(dir, date, kz, radius, lat, lon, df, dir_output):
   Returns:
   list: Усредненные значения.
   """
-  output_dir = f'{dir_output}\\{date}\\Means'
+  output_dir = os.path.join(dir_output, date, 'Means')
   os.makedirs(output_dir, exist_ok=True)
 
   mean = meaning.meaning_hum(date, dir, 'rh', kz, radius, lat, lon)
@@ -69,10 +70,12 @@ def meaning_main_hum(dir, date, kz, radius, lat, lon, df, dir_output):
   mean_df['opendata'] = list_opendata
   correlation = mean_df['opendata'].corr(mean_df[f'{date}'])
   print(f"Коэффициент корреляции (влажность) = {correlation}")
-  mean_df.to_csv(f'{output_dir}\\mean_rh_{kz}_{date}.csv', header=False, index=False, mode='w')
+  csv_file_path = os.path.join(output_dir, f"mean_rh_{kz}_{date}.csv")
+  mean_df.to_csv(csv_file_path, header=False, index=False, mode='w')
 
 def output_main(date_list, dir_input, dir_output, radius, lat, lon, dir_opendata):
-  dataset = nc.Dataset(f'{dir_input}\\50ea__ATM.{date_list[0]}00.nc', 'r')
+  nc_file_path = os.path.join(dir_input, f'50ea__ATM.{date_list[0]}00.nc')
+  dataset = nc.Dataset(nc_file_path, 'r')
   df_t = data_to_df.t_to_df(dataset, 4, radius, lat, lon)
   df_rh = data_to_df.hum_to_df(dataset, 4, radius, lat, lon, 'rh')
 
