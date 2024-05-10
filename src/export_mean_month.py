@@ -66,17 +66,23 @@ def meaning_main_t(dir, methods, kz, radius, lat, lon, df, dir_output):
   while i < len(df):
     list_opendata.append(df['T'].loc[i])
     i +=2
+    
+  new_list_opendata = []
+  new_list_model = []
+  i = 0
+  while i < len(mean):
+    temp_model = sum(mean[i:(i+4)])/4
+    new_list_model.append(temp_model)
+    temp_opendata = sum(list_opendata[i:(i+4)])/4
+    new_list_opendata.append(temp_opendata)
+    i +=4
 
-  mean_df = pd.DataFrame(data= mean, columns=['Model'])
-  if len(mean_df) == len(list_opendata):
-      mean_df['OpenData'] = list_opendata
-  else:
-      print("Ошибка: длина данных модели не совпадает с длиной фактических данных")
-      return
-  
+  mean_df = pd.DataFrame(data= new_list_model, columns=['Model'])
+  mean_df['OpenData'] = new_list_opendata
+
   csv_file_path = os.path.join(output_dir, f"mean_t_{kz}.csv")
   mean_df.to_csv(csv_file_path, header=False, index=False, mode='w')
-  analyze(methods, mean_df, "температура")
+  analyze.analyze(methods, mean_df, "температура")
 
 def meaning_main_hum(dir, methods, kz, radius, lat, lon, df, dir_output):
   """
@@ -105,16 +111,22 @@ def meaning_main_hum(dir, methods, kz, radius, lat, lon, df, dir_output):
     list_opendata.append(df['f'].loc[i])
     i +=2
 
-  mean_df = pd.DataFrame(data= mean, columns=['Model'])
-  if len(mean_df) == len(list_opendata):
-      mean_df['OpenData'] = list_opendata
-  else:
-      print("Ошибка: длина данных модели не совпадает с длиной фактических данных")
-      return
-  
+  new_list_opendata = []
+  new_list_model = []
+  i = 0
+  while i < len(mean):
+    temp_model = sum(mean[i:(i+4)])/4
+    new_list_model.append(temp_model)
+    temp_opendata = sum(list_opendata[i:(i+4)])/4
+    new_list_opendata.append(temp_opendata)
+    i +=4
+
+  mean_df = pd.DataFrame(data= new_list_model, columns=['Model'])
+  mean_df['OpenData'] = new_list_opendata
+
   csv_file_path = os.path.join(output_dir, f"mean_rh_{kz}.csv")
   mean_df.to_csv(csv_file_path, header=False, index=False, mode='w')
-  analyze(methods, mean_df, "влажность")
+  analyze.analyze(methods, mean_df, "влажность")
 
 def meaning_main_ps(dir, methods, kz, radius, lat, lon, df, dir_output):
   """
@@ -144,14 +156,20 @@ def meaning_main_ps(dir, methods, kz, radius, lat, lon, df, dir_output):
     list_opendata.append(df['P'].loc[i])
     i +=2
 
-  mean_df = pd.DataFrame(data= mean, columns=['Model'])
-  if len(mean_df) == len(list_opendata):
-      mean_df['OpenData'] = list_opendata
-  else:
-      print("Ошибка: длина данных модели не совпадает с длиной фактических данных")
-      return
+  new_list_opendata = []
+  new_list_model = []
+  i = 0
+  while i < len(mean):
+    temp_model = sum(mean[i:(i+4)])/4
+    new_list_model.append(temp_model)
+    temp_opendata = sum(list_opendata[i:(i+4)])/4
+    new_list_opendata.append(temp_opendata)
+    i +=4
+
+  mean_df = pd.DataFrame(data= new_list_model, columns=['Model'])
+  mean_df['OpenData'] = new_list_opendata
   
   csv_file_path = os.path.join(output_dir, f"mean_ps_{kz}.csv")
   mean_df.to_csv(csv_file_path, header=False, index=False, mode='w')
-  analyze(methods, mean_df, "давление")
+  analyze.analyze(methods, mean_df, "давление")
 

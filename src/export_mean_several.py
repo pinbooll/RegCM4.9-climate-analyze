@@ -75,15 +75,15 @@ def output_main(var_list, methods, dir_input, dir_output, radius, lat, lon, dir_
     if var == 't':
       csv_file_path_df_t = os.path.join(output_dir, f"mean_t_several.csv")
       result_df_t.to_csv(csv_file_path_df_t, header=False, index=False, mode='w')
-      analyze(methods, result_df_t, "температура")
+      analyze.analyze(methods, result_df_t, "температура")
     if var == 'rh':
       csv_file_path_df_rh = os.path.join(output_dir, f"mean_rh_several.csv")
       result_df_rh.to_csv(csv_file_path_df_rh, header=False, index=False, mode='w')
-      analyze(methods, result_df_rh, "влажность")
+      analyze.analyze(methods, result_df_rh, "влажность")
     if var == 'ps':
       csv_file_path_df_ps = os.path.join(output_dir, f"mean_ps_several.csv")
       result_df_ps.to_csv(csv_file_path_df_ps, header=False, index=False, mode='w')
-      analyze(methods, result_df_ps, "давление")
+      analyze.analyze(methods, result_df_ps, "давление")
         
 def meaning_main_t(file_dir, kz, radius, lat, lon, df):
   mean = meaning.meaning_t(file_dir, 't', kz, radius, lat, lon)
