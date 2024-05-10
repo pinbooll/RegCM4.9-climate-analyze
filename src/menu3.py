@@ -6,8 +6,8 @@ import sys
 import export_mean_month
 import time
 
-def menu3():
-    win = tk.Tk()
+def menu3(root):
+    win = tk.Toplevel(root)
     win.title("Анализ данных климатического моделирования")
     win.geometry("800x600")
     win.resizable(False, False)
@@ -23,7 +23,7 @@ def menu3():
     # Кнопки управления
     top_frame = ttk.Frame(win, style='My.TFrame')
     top_frame.pack(side='top', fill='x')
-    button1 = ttk.Button(top_frame, text="Назад", style='My.TButton', command=lambda: back_to_main(win))
+    button1 = ttk.Button(top_frame, text="Назад", style='My.TButton', command=lambda: back_to_main(win, root))
     button1.pack(side='left', padx=5, pady=5)
 
     # Название метода
@@ -172,10 +172,9 @@ def select_folder(entry_widget):
     entry_widget.delete(0, tk.END)
     entry_widget.insert(tk.END, foldername)
 
-def back_to_main(win):
+def back_to_main(win, root):
     win.destroy()
-    from main import main_menu
-    main_menu()
+    root.deiconify()
 
 class TextHandler(object):
     def __init__(self, text_widget):

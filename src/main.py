@@ -1,22 +1,23 @@
 from tkinter import ttk
 import tkinter as tk
 import tkinter.font as tkfont
+from menu1 import menu1
+from menu2 import menu2
+from menu3 import menu3
+from menu4 import menu4
 #pyinstaller --onefile main.py
+#pyinstaller main.spec
 
 def open_menu(menu_function_name):
-    root.destroy()
-    if menu_function_name == 'menu1':
-        from menu1 import menu1
-        menu1()
-    elif menu_function_name == 'menu2':
-        from menu2 import menu2
-        menu2()
-    elif menu_function_name == 'menu3':
-        from menu3 import menu3
-        menu3()
-    elif menu_function_name == 'menu4':
-        from menu4 import menu4
-        menu4()
+    root.withdraw()
+    menu = {
+        'menu1': menu1,
+        'menu2': menu2,
+        'menu3': menu3,
+        'menu4': menu4
+    }.get(menu_function_name)
+    if menu:
+        menu(root)
 
 def main_menu():
     global root
