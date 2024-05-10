@@ -145,3 +145,37 @@ def hum_to_df(dataset, index_current_time, radius, lat, lon, key):
 
   df.set_index('kz', inplace=True)
   return df
+
+def ps_to_df(dataset, index_current_time, radius, lat, lon):
+  """
+  Сформировать данные давления в определенный момент времени.
+
+  Args:
+  dataset (netCDF): Исходные данные модели.
+  index_current_time (int): Индекс отрезка времени в массиве времен модели.
+
+  Returns:
+  DataFrame: Данные влажности воздуха в определенный момент времени.
+  """
+  latvals = dataset.variables['xlat'][:]
+  lonvals = dataset.variables['xlon'][:]
+
+  iy_min, ix_min = getclosest_ij(latvals, lonvals, lat, lon)
+  left_border_x = ix_min - radius
+  right_border_x = ix_min + radius
+  left_border_y = iy_min - radius
+  right_border_y = iy_min + radius
+
+  jx = dataset.variables['jx'][left_border_x:right_border_x]
+  iy = dataset.variables['iy'][left_border_y:right_border_y]
+  kz = dataset.variables['kz'][:]
+  ps_current = dataset.variables['ps'][index_current_time, left_border_y:right_border_y, left_border_x:right_border_x]
+
+
+  grid = [iy, jx]
+  df = pd.DataFrame(np.array(list(product(*grid))), columns=['iy', 'jx'])
+  df['kz'] = kz[0]
+  df['ps'] = np.ravel(ps_current) * 0.01
+
+  df.set_index('kz', inplace=True)
+  return df
