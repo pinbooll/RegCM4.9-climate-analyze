@@ -20,7 +20,7 @@ def meaning_t(dir, var, kz, radius, lat, lon):
   """
   dataset = nc.Dataset(dir, 'r')
   list_mean = []
-  for time in range(0, len(dataset.variables['time'])):
+  for time in range(0, len(dataset.variables['time'])-1):
     df = data_to_df.t_to_df(dataset, time, radius, lat, lon)
     list_mean.append(df.loc[kz][var].mean())
 
@@ -43,7 +43,7 @@ def meaning_hum(dir, var, kz, radius, lat, lon):
   """
   dataset = nc.Dataset(dir, 'r')
   list_mean = []
-  for time in range(0, len(dataset.variables['time'])):
+  for time in range(0, len(dataset.variables['time'])-1):
     df = data_to_df.hum_to_df(dataset, time, radius, lat, lon, var)
     list_mean.append(df.loc[kz][var].mean())
 
@@ -66,7 +66,7 @@ def meaning_ps(dir, var, kz, radius, lat, lon):
   """
   dataset = nc.Dataset(dir, 'r')
   list_mean = []
-  for time in range(0, len(dataset.variables['time'])):
+  for time in range(0, len(dataset.variables['time'])-1):
     df = data_to_df.ps_to_df(dataset, time, radius, lat, lon)
     list_mean.append(df[var].mean())
 
