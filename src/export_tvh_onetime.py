@@ -20,7 +20,7 @@ def output(df, var, dir_output, time_index):
   Returns:
   None
   """
-  output_dir = os.path.join(dir_output, f"tvh_{time_transform(time_index)}")
+  output_dir = os.path.join(dir_output, f"tvph_{time_transform(time_index)}")
   os.makedirs(output_dir, exist_ok=True)
   i = 0
   for z in df.index.unique():
