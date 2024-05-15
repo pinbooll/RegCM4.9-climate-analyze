@@ -5,7 +5,7 @@ from menu1 import menu1
 from menu2 import menu2
 from menu3 import menu3
 from menu4 import menu4
-#pyinstaller --onefile main.py
+#python3 -m PyInstaller --onefile main.py
 #pyinstaller main.spec
 
 def open_menu(menu_function_name):
