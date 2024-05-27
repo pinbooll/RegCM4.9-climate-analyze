@@ -5,6 +5,7 @@ from menu1 import menu1
 from menu2 import menu2
 from menu3 import menu3
 from menu4 import menu4
+from menu5 import menu5
 #python3 -m PyInstaller --onefile main.py
 #pyinstaller main.spec
 
@@ -14,7 +15,8 @@ def open_menu(menu_function_name):
         'menu1': menu1,
         'menu2': menu2,
         'menu3': menu3,
-        'menu4': menu4
+        'menu4': menu4,
+        'menu5': menu5
     }.get(menu_function_name)
     if menu:
         menu(root)
@@ -40,11 +42,13 @@ def main_menu():
     button2 = ttk.Button(root, text="Вывод данных за промежуток времени", style='My.TButton', command=lambda: open_menu('menu2'))
     button3 = ttk.Button(root, text="Вывод распределения и анализ данных (1 месяц)", style='My.TButton', command=lambda: open_menu('menu3'))
     button4 = ttk.Button(root, text="Вывод распределения и анализ данных (несколько месяцев)", style='My.TButton', command=lambda: open_menu('menu4'))
+    button5 = ttk.Button(root, text="Вывод распределения и анализ данных (год)", style='My.TButton', command=lambda: open_menu('menu5'))
 
     button1.pack(fill='x', padx=150, pady=10)
     button2.pack(fill='x', padx=150, pady=10)
     button3.pack(fill='x', padx=150, pady=10)
     button4.pack(fill='x', padx=150, pady=10)
+    button5.pack(fill='x', padx=150, pady=10)
 
     root.mainloop()
 

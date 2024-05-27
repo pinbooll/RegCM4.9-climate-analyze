@@ -16,10 +16,11 @@ def analyze(methods, mean_df, var):
   for method in methods:
     if method == 'Корреляция':
       correlation = mean_df['OpenData'].corr(mean_df['Model'])
-      print(f"Коэффициент корреляции ({var}) = {correlation}")
-    if method == 'Среднеквадратичная ошибка':
+      print(f"Коэффициент корреляции ({var}) = {correlation:.3f}")
+    if method == 'Среднеквадратическая ошибка':
       mse = np.mean((mean_df['OpenData'] - mean_df['Model']) ** 2)
-      print(f"Среднеквадратичная ошибка ({var}) = {mse}")
+      rmse = np.sqrt(mse)
+      print(f"Среднеквадратическая ошибка ({var}) = {rmse:.3f}")
     if method == 'Индекс согласия':
       d_index = willmott_index(mean_df['OpenData'].values, mean_df['Model'].values)
-      print(f"Индекс согласия Уиллмота ({var}) = {d_index}")
+      print(f"Индекс согласия Уиллмота ({var}) = {d_index:.3f}")

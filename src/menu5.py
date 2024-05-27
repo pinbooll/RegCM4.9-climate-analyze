@@ -3,10 +3,10 @@ from tkinter import ttk
 import tkinter.font as tkfont
 from tkinter import filedialog, Text
 import sys
-import export_mean_several
+import export_mean_several_opendata
 import time
 
-def menu4(root):
+def menu5(root):
     win = tk.Toplevel(root)
     win.title("Анализ данных климатического моделирования")
     win.geometry("800x600")
@@ -52,10 +52,10 @@ def menu4(root):
     compare_file_frame = ttk.Frame(win, style='My.TFrame')
     compare_file_frame.pack(pady=(5, 5))
     compare_file_entry = tk.Entry(compare_file_frame, width=50)
-    compare_file_entry.insert(0, "Введите путь к папке с файлами для сравнения или выберите папку...")
+    compare_file_entry.insert(0, "Введите путь к файлу для сравнения или выберите файл...")
     compare_file_entry.bind("<FocusIn>", lambda args: compare_file_entry.delete(0, 'end'))
     compare_file_entry.pack(side='left', padx=5)
-    compare_file_button = ttk.Button(compare_file_frame, text="Выбрать папку", style='My.TButton', command=lambda: select_folder(compare_file_entry))
+    compare_file_button = ttk.Button(compare_file_frame, text="Выбрать файл", style='My.TButton', command=lambda: select_file_csv(compare_file_entry))
     compare_file_button.pack(side='right', padx=5)
 
     # Поля для параметров анализа
@@ -79,29 +79,6 @@ def menu4(root):
     longitude_label.pack()
     longitude_entry = tk.Entry(param_frame, width=20)
     longitude_entry.pack()
-
-    # Выбор переменных
-    param_label = tk.Label(param_frame, text="Выберите параметры:")
-    param_label.pack()
-    param_listbox = tk.Listbox(param_frame, selectmode='multiple', width=25, height=5, exportselection=0)
-    param_listbox.pack()
-
-    parameters = {
-        "Температура": "t",
-        "Относительная влажность воздуха": "rh",
-        "Давление": "ps"
-    }
-
-    for param in parameters:
-        param_listbox.insert(tk.END, param)
-
-    # Функция для получения выбранных элементов
-    def get_selected_params():
-        selected_indices = param_listbox.curselection()  # Получаем индексы выбранных элементов
-        selected_params = [param_listbox.get(i) for i in selected_indices]  # Получаем значения по этим индексам
-        # Преобразование выбранных параметров в метки
-        selected_labels = [parameters[param] for param in selected_params if param in parameters]
-        return selected_labels
 
     result_frame = ttk.Frame(win, style='My.TFrame')
     result_frame.pack(side='right', fill='both', expand=True, padx=20, pady=5)
@@ -148,7 +125,7 @@ def menu4(root):
     output_text.bind("<Control-c>", copy_selection)
 
     button2 = ttk.Button(top_frame, text="Выполнить", style='My.TButton', 
-                         command=lambda: run_method(file_entry.get(), int(radius_entry.get()), get_selected_params(), 
+                         command=lambda: run_method(file_entry.get(), int(radius_entry.get()), 
                                                     float(latitude_entry.get()), float(longitude_entry.get()), folder_entry.get(),
                                                     get_selected_methods(), compare_file_entry.get()))
     button2.pack(side='right', padx=5, pady=5)
@@ -159,6 +136,12 @@ def select_folder(entry_widget):
     foldername = filedialog.askdirectory(initialdir="/", title="Select folder")
     entry_widget.delete(0, tk.END)
     entry_widget.insert(tk.END, foldername)
+
+def select_file_csv(entry_widget):
+    filename = filedialog.askopenfilename(initialdir="/", title="Select file", 
+                                          filetypes=(("CSV files", "*.csv"), ("All files", "*.*")))
+    entry_widget.delete(0, tk.END)
+    entry_widget.insert(tk.END, filename)
 
 def back_to_main(win, root):
     win.destroy()
@@ -177,9 +160,9 @@ class TextHandler(object):
     def flush(self):
         pass
 
-def run_method(dir_input, radius, var_list, lat, lon, dir_output, methods, dir_opendata):
+def run_method(dir_input, radius, lat, lon, dir_output, methods, dir_opendata):
     start_time = time.time()
-    export_mean_several.output_main(var_list, methods, dir_input, dir_output, radius, lat, lon, dir_opendata)
+    export_mean_several_opendata.output_main(methods, dir_input, dir_output, radius, lat, lon, dir_opendata)
     print("\nДействие выполнено успешно")
     end_time = time.time()
     execution_time = end_time - start_time
